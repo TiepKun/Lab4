@@ -17,20 +17,25 @@ public class Track implements Playable {
         return length;
     }
 
+    @Override
     public void play() {
-        System.out.println("Playing Track: " + this.getTitle());
-        System.out.println("Track length: " + this.getLength());
+        System.out.println("Playing track: " + title + " (" + length + " minutes)");
     }
 
-    
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Track track = (Track) obj;
-        return length == track.length && title.equals(track.title);
+        return length == track.length && title.equalsIgnoreCase(track.title);
     }
 
-    
+    @Override
+    public int hashCode() {
+        return title.toLowerCase().hashCode() * 31 + length;
+    }
+
+    @Override
     public String toString() {
         return "Track [title=" + title + ", length=" + length + "]";
     }
