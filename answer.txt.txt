@@ -1,0 +1,8 @@
+9) 
+- Lớp tổng hợp: 
+	+) Cart tổng hợp Media (Vì Cart chứa một danh sách Media)
+	+) Store tổng hợp Media (Vì Store chứa một danh sách Media)
+	+) CompactDisc tổng hợp Track (Vì CompactDisc chứa một danh sách Track)
+- Lớp con: 
+	+) DigitalVideoDisc, CompactDisc, Track là các lớp con của Media
+10) 
