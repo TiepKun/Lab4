@@ -3,16 +3,13 @@ package hust.soict.hedspi.aims.media;
 import java.util.ArrayList;
 
 public class Book extends Media {
-    // Additional field specific to Book
     private ArrayList<String> authors;
 
-    // Constructor
     public Book(int id, String title, String category, float cost) {
-        super(id, title, category, cost); // Call Media's constructor
+        super(id, title, category, cost);
         this.authors = new ArrayList<>();
     }
 
-    // Methods to manage authors
     public void addAuthor(String authorName) {
         if (!authors.contains(authorName)) {
             authors.add(authorName);
@@ -31,5 +28,10 @@ public class Book extends Media {
 
     public ArrayList<String> getAuthors() {
         return new ArrayList<>(authors);
+    }
+
+    @Override
+    public String toString() {
+        return "Book - " + getTitle() + " - " + getCategory() + " - Authors: " + authors + " - " + getCost() + " $";
     }
 }

@@ -5,4 +5,60 @@
 	+) CompactDisc tổng hợp Track (Vì CompactDisc chứa một danh sách Track)
 - Lớp con: 
 	+) DigitalVideoDisc, CompactDisc, Track là các lớp con của Media
-10) 
+10) this == obj: Kiểm tra xem đối tượng hiện tại (this) có giống hoàn toàn với đối tượng được truyền vào (obj) không. Nếu đúng, trả về true.
+obj == null: Nếu đối tượng truyền vào là null, trả về false.
+getClass() != obj.getClass(): So sánh lớp của đối tượng hiện tại với lớp của đối tượng được truyền vào.
+Nếu obj không phải là một instance của lớp Media, điều kiện này sẽ trả về false, và phương thức kết thúc mà không thực hiện các thao tác khác.
+11)
+Khi gọi phương thức toString() trên các đối tượng trong danh sách ArrayList<Media>, Java sử dụng tính đa hình. Điều này có nghĩa là phương thức toString() cụ thể của từng lớp con (Book, CompactDisc, DigitalVideoDisc) được gọi, thay vì phương thức toString() của lớp cha Media.
+Do đó, mỗi đối tượng in ra thông tin phù hợp với định nghĩa toString() trong lớp cụ thể của nó.
+12)
+- Lớp Media nên implement interface Comparable vì đây là lớp cơ sở (base class) đại diện cho các loại phương tiện (media) khác nhau. Việc cài đặt Comparable tại lớp này sẽ cho phép các đối tượng thuộc lớp con của Media (ví dụ: Book, DigitalVideoDisc) có thể được sắp xếp dựa trên logic định nghĩa trong phương thức compareTo().
+- 
+	+)Nếu sắp xếp theo tiêu đề và giá:
+		@Override
+public int compareTo(Media other) {
+    // So sánh theo tiêu đề trước (alphabetical)
+    int titleComparison = this.title.compareToIgnoreCase(other.title);
+    if (titleComparison != 0) {
+        return titleComparison;
+    }
+    // Nếu tiêu đề giống nhau, so sánh theo giá giảm dần
+    return Float.compare(other.cost, this.cost);
+}
+
+	+) Nếu sắp xếp theo giá và tiêu đề:
+@Override
+public int compareTo(Media other) {
+    // So sánh theo giá giảm dần
+    int costComparison = Float.compare(other.cost, this.cost);
+    if (costComparison != 0) {
+        return costComparison;
+    }
+    // Nếu giá giống nhau, so sánh theo tiêu đề (alphabetical)
+    return this.title.compareToIgnoreCase(other.title);
+}
+=> Lưu ý: Khi sử dụng Comparable, chúng ta chỉ có thể định nghĩa một quy tắc sắp xếp duy nhất thông qua compareTo().
+- Không. Khi sử dụng Comparable, chỉ một quy tắc sắp xếp duy nhất có thể được định nghĩa trong phương thức compareTo().
+Để có nhiều quy tắc sắp xếp khác nhau, cần sử dụng Comparator thay vì Comparable.
+- Trong trường hợp này, chúng ta cần override phương thức compareTo() tại lớp con DigitalVideoDisc (hoặc lớp DVD), như sau:
+@Override
+public int compareTo(Media other) {
+    if (other instanceof DigitalVideoDisc) {
+        DigitalVideoDisc otherDvd = (DigitalVideoDisc) other;
+        // So sánh theo tiêu đề (alphabetical)
+        int titleComparison = this.title.compareToIgnoreCase(otherDvd.title);
+        if (titleComparison != 0) {
+            return titleComparison;
+        }
+        // Nếu tiêu đề giống nhau, so sánh theo độ dài giảm dần
+        int lengthComparison = Integer.compare(otherDvd.length, this.length);
+        if (lengthComparison != 0) {
+            return lengthComparison;
+        }
+        // Nếu độ dài giống nhau, so sánh theo giá giảm dần
+        return Float.compare(otherDvd.cost, this.cost);
+    }
+    // Nếu không phải DVD, mặc định so sánh như trong lớp Media
+    return super.compareTo(other);
+}

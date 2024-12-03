@@ -17,17 +17,16 @@ public class CompactDisc extends Disc implements Playable {
     }
 
     public void addTrack(Track track) {
-        if (tracks.contains(track)) {
-            System.out.println("Track already exists in the list.");
-        } else {
+        if (!tracks.contains(track)) {
             tracks.add(track);
             System.out.println("Track added successfully.");
+        } else {
+            System.out.println("Track already exists in the list.");
         }
     }
 
     public void removeTrack(Track track) {
-        if (tracks.contains(track)) {
-            tracks.remove(track);
+        if (tracks.remove(track)) {
             System.out.println("Track removed successfully.");
         } else {
             System.out.println("Track not found in the list.");
@@ -53,6 +52,6 @@ public class CompactDisc extends Disc implements Playable {
 
     @Override
     public String toString() {
-        return super.toString() + ", artist=" + artist + ", tracks=" + tracks;
+        return "CD - " + getTitle() + " - " + getCategory() + " - Artist: " + artist + " - Length: " + getLength() + " - " + getCost() + " $";
     }
 }
