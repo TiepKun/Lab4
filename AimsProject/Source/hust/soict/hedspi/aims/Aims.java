@@ -1,6 +1,9 @@
 package hust.soict.hedspi.aims;
 
 import hust.soict.hedspi.aims.cart.Cart;
+import hust.soict.hedspi.aims.media.Book;
+import hust.soict.hedspi.aims.media.CompactDisc;
+import hust.soict.hedspi.aims.media.DVD;
 import hust.soict.hedspi.aims.media.Media;
 import hust.soict.hedspi.aims.media.Playable;
 import hust.soict.hedspi.aims.store.Store;
@@ -13,6 +16,31 @@ public class Aims {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        Media cd = new CompactDisc(1, "The Man", "Music", 10.99f, 120, "Director", "The Beatles");
+        Media dvd = new DVD(2, "Incon", "Sci-Fi", 14.99f, "Christopher Nolan", 148);
+        Media book = new Book(3, "The Al", "Novel", 12.99f);
+        Media cd2 = new CompactDisc(4, "Thrillestic", "Music", 9.99f, 110, "Quincy Jones", "Michael Jackson");
+
+        Media dvd2 = new DVD(5, "Mad: Fury Road and IOP", "Action", 19.99f, "George Miller", 120);
+        Media book2 = new Book(6, "Harry Potter", "Fantasy", 15.99f);
+        Media dvd3 = new DVD(7, "The Sharl", "Drama", 13.49f, "Frank Darabont", 142);
+        Media cd3 = new CompactDisc(8, "Kind things Blue", "Jazz", 11.49f, 55, "Miles Davis", "Miles Davis");
+        Media book3 = new Book(9, "Girl with the Thurt", "Mystery", 18.49f);
+        Media dvd4 = new DVD(10, "Motel", "Comedy", 17.99f, "Wes Anderson", 99);
+        Media cd4 = new CompactDisc(11, "Four Seasons", "Classical", 14.49f, 80, "Antonio Vivaldi", "Vivaldi");
+        
+        
+        store.addMedia(cd);
+        store.addMedia(dvd);
+        store.addMedia(book);
+        store.addMedia(cd2);
+        store.addMedia(dvd2);
+        store.addMedia(book2);
+        store.addMedia(cd3);
+        store.addMedia(dvd3);
+        store.addMedia(book3);
+        store.addMedia(cd4);
+        store.addMedia(dvd4);
         int choice;
 
         do {
@@ -174,14 +202,57 @@ public class Aims {
 
         switch (choice) {
             case 1:
-                // Logic to add media to the store
-                System.out.println("Adding media to store...");
+                // Nhập thông tin media mới
+                System.out.print("Enter type of media (Book, DVD, CD): ");
+                String type = scanner.nextLine();
+
+                System.out.print("Enter title: ");
+                String title = scanner.nextLine();
+
+                System.out.print("Enter category: ");
+                String category = scanner.nextLine();
+
+                System.out.print("Enter cost: ");
+                float cost = scanner.nextFloat();
+                scanner.nextLine(); // Consume newline
+
+                // Kiểm tra và nhập thông tin cho từng loại media
+                Media media = null;
+                if (type.equalsIgnoreCase("Book")) {
+                    media = new Book(store.generateId(), title, category, cost);
+                } else if (type.equalsIgnoreCase("DVD")) {
+                    System.out.print("Enter director: ");
+                    String director = scanner.nextLine();
+
+                    System.out.print("Enter length (minutes): ");
+                    int length = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+
+                    media = new DVD(store.generateId(), title, category, cost, director, length);
+                } else if (type.equalsIgnoreCase("CD")) {
+                    System.out.print("Enter artist: ");
+                    String artist = scanner.nextLine();
+
+                    System.out.print("Enter length (minutes): ");
+                    int length = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+
+                    media = new CompactDisc(store.generateId(), title, category, cost, length, "Unknown", artist);
+                } else {
+                    System.out.println("Invalid media type!");
+                    break;
+                }
+
+                store.addMedia(media);  // Thêm media vào cửa hàng
+                System.out.println("Media added to store.");
                 break;
+
             case 2:
                 System.out.print("Enter the title of the media to remove: ");
-                String title = scanner.nextLine();
-                store.removeMedia(title);
+                String titleToRemove = scanner.nextLine();
+                store.removeMedia(titleToRemove);
                 break;
+
             default:
                 System.out.println("Invalid choice! Please choose again.");
         }

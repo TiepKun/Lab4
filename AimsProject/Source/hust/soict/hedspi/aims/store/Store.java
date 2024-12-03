@@ -1,53 +1,54 @@
 package hust.soict.hedspi.aims.store;
 
 import hust.soict.hedspi.aims.media.Media;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class Store {
-    private List<Media> itemsInStore = new ArrayList<>();
+    private List<Media> itemsInStore;  // Danh sách các media trong cửa hàng
 
+    public Store() {
+        itemsInStore = new ArrayList<>();
+    }
+
+    // Phương thức thêm media vào cửa hàng
     public void addMedia(Media media) {
-        if (media != null && !itemsInStore.contains(media)) {
-            itemsInStore.add(media);
-            System.out.println(media.getTitle() + " has been added to the store.");
-        } else {
-            System.out.println("This media is already in the store or invalid.");
-        }
+        itemsInStore.add(media);
     }
 
+    // Phương thức xóa media khỏi cửa hàng theo tên
     public void removeMedia(String title) {
-        Media mediaToRemove = findMediaByTitle(title);
-        if (mediaToRemove != null) {
-            itemsInStore.remove(mediaToRemove);
-            System.out.println(title + " has been removed from the store.");
-        } else {
-            System.out.println("Media not found in the store.");
-        }
+        itemsInStore.removeIf(media -> media.getTitle().equalsIgnoreCase(title));
     }
 
+    // Phương thức tìm media theo tên trong cửa hàng
     public Media findMediaByTitle(String title) {
         for (Media media : itemsInStore) {
             if (media.getTitle().equalsIgnoreCase(title)) {
                 return media;
             }
         }
-        return null;
+        return null;  // Không tìm thấy media
     }
 
+    // Phương thức in danh sách media trong cửa hàng
     public void printStore() {
         if (itemsInStore.isEmpty()) {
-            System.out.println("The store is currently empty.");
+            System.out.println("The store is empty.");
         } else {
-            System.out.println("Items available in the store:");
-            System.out.println("--------------------------------");
-            for (int i = 0; i < itemsInStore.size(); i++) {
-                Media media = itemsInStore.get(i);
-                System.out.println((i + 1) + ". " + media.getTitle() + " - " + media.getCategory() 
-                                   + " - $" + media.getCost());
+            for (Media media : itemsInStore) {
+                System.out.println(media.toString());
             }
-            System.out.println("--------------------------------");
         }
+    }
+
+    // Phương thức tạo ID tự động cho media mới
+    public int generateId() {
+        return itemsInStore.size() + 1;  // ID mới sẽ là số phần tử hiện tại + 1
+    }
+
+    // Getter cho danh sách media trong cửa hàng
+    public List<Media> getItemsInStore() {
+        return itemsInStore;
     }
 }
